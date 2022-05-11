@@ -21,13 +21,13 @@ def pregunta_01():
     df = pd.read_csv("insurance.csv", sep=',')
 
     # Asigne la columna `charges` a la variable `y`.
-    y = df['charges'].copy()
+    y = df['charges'].values
 
     # Asigne una copia del dataframe `df` a la variable `X`.
     X = df.copy()
 
     # Remueva la columna `charges` del DataFrame `X`.
-    X.drop(['charges'],axis=1,inplace=True)
+    X.drop('charges',axis=1,inplace=True)
 
     # Retorne `X` y `y`
     return X, y
@@ -90,7 +90,7 @@ def pregunta_03():
                 make_column_transformer(
                     (
                         OneHotEncoder(),
-                        make_column_selector(dtype_include=object),
+                        make_column_selector(dtype_include=object)
                     ),
                     remainder='passthrough',
                 ),
@@ -99,12 +99,12 @@ def pregunta_03():
             # características más importantes. Utilice la función f_regression.
             (
                 "selectKBest",
-                SelectKBest(score_func=f_regression),
+                SelectKBest(score_func=f_regression)
             ),
             # Paso 3: Construya un modelo de regresión lineal.
             (
                 "Regresor",
-                LinearRegression(),
+                LinearRegression()
             ),
         ],
     )
@@ -115,9 +115,7 @@ def pregunta_03():
     # Defina un diccionario de parámetros para el GridSearchCV. Se deben
     # considerar valores desde 1 hasta 11 regresores para el modelo
     param_grid = {
-        'selectKBest__k': np.arange(1, 9),
-        'Regresor__normalize': [True,False],
-        'Regresor__n_jobs': np.arange(1, 11)
+        'Regresor__fit_intercept': list(range(1,12))
     }
 
     # Defina una instancia de GridSearchCV con el pipeline y el diccionario de
